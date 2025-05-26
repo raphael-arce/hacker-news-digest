@@ -14,14 +14,22 @@ Answer with JUST TEXT, DO NOT RETURN MARKDOWN:
 ${markdown}`;
 
 	try {
+		const start = performance.now();
+
 		const { text } = await generateText({
 			model,
 			prompt,
 		});
 
+		const end = performance.now();
+		const timing = end - start;
+		console.log(`generating AI summary took: ${timing} ms`);
+
 		return text;
 	} catch (error) {
 		console.error(`Error getting AI summary for ${href}:`, error);
+		// TODO return custom error for custom/known errors, e.g. too many tokens
+		// (`Prompt contains 161365 tokens and 0 draft tokens, too large for model with 131072 maximum context length`)
 		return null;
 	}
 }

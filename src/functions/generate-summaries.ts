@@ -11,10 +11,10 @@ export async function generateSummaries({ submissions, env }: { submissions: Sub
 	for (let i = 0; i < submissions.length; i++) {
 		const submission = submissions[i];
 
-		console.log(`submission_${i}: extracting markdown...`);
+		console.log(`submission_${i}: extracting markdown for ${submission.href}...`);
 		submission.markdown = await extractMarkdown({ url: submission.href, env });
 
-		console.log(`submission_${i}: generating summary...`);
+		console.log(`submission_${i}: generating summary for ${submission.href}...`);
 		const summary = await generateHTMLSummary({ submission, env });
 
 		summaries.push(summary);

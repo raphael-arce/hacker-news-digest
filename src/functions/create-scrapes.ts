@@ -20,6 +20,8 @@ export async function createScrapes({
 	headers.append('Content-Type', 'application/json');
 
 	try {
+		const start = performance.now();
+
 		const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/browser-rendering/scrape`, {
 			headers,
 			method: 'POST',
@@ -32,6 +34,11 @@ export async function createScrapes({
 				],
 			}),
 		});
+
+		const end = performance.now();
+		const timing = end - start;
+
+		console.log(`creating scrapes took: ${timing} ms`);
 
 		const json = (await response.json()) as CfScrapeApiResponse;
 

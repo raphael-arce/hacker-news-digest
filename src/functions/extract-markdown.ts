@@ -11,11 +11,18 @@ export async function extractMarkdown({ url, env }: { url?: string | null; env: 
 	headers.append('Content-Type', 'application/json');
 
 	try {
+		const start = performance.now();
+
 		const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/browser-rendering/markdown`, {
 			headers,
 			method: 'POST',
 			body: JSON.stringify({ url }),
 		});
+
+		const end = performance.now();
+		const timing = end - start;
+
+		console.log(`extracting markdown took: ${timing} ms`);
 
 		const json = (await response.json()) as CfMarkdownApiResponse;
 

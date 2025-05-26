@@ -36,12 +36,14 @@ export async function scrapeSubmissions(env: Env) {
 	const submissions: Submission[] = [];
 
 	for (let i = 0; i < Number(env.LIMIT); i++) {
+		const submissionHref = absolutizeUrl(submissionAnchors[i].attributes.find((attribute) => attribute.name === 'href')?.value);
+
 		const commentsHref = submissionComments[i].attributes.find((attribute) => attribute.name === 'href')?.value;
 		const commentsLink = `https://news.ycombinator.com/${commentsHref}`;
 
 		submissions.push({
 			title: submissionAnchors[i].text,
-			href: submissionAnchors[i].attributes.find((attribute) => attribute.name === 'href')?.value,
+			href: submissionHref,
 			score: submissionScores[i].text,
 			commentsAmount: submissionComments[i].text,
 			commentsLink,
@@ -49,4 +51,16 @@ export async function scrapeSubmissions(env: Env) {
 	}
 
 	return submissions;
+}
+
+function absolutizeUrl(url: string | undefined) {
+	if (!url) {
+		return null;
+	}
+
+	if (url.startsWith('item?id=')) {
+		return `https://news.ycombinator.com/${url}`;
+	}
+
+	return url;
 }
