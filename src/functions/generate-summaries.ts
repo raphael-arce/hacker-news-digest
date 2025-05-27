@@ -15,13 +15,13 @@ export async function generateSummaries({ submissions, env }: { submissions: Sub
 		submission.markdown = await extractMarkdown({ url: submission.href, env });
 
 		console.log(`submission_${i}: generating summary for ${submission.href}...`);
-		const summary = await generateHTMLSummary({ submission, env });
+		const summary = await generateHTMLSummary({ index: i, submission, env });
 
 		summaries.push(summary);
 	}
 
 	if (summaries.length === 0) {
-		return '<p>There was an error and no summaries could be generated</p>';
+		return '<p><i>There was an error and no summaries could be generated<i/></p>';
 	}
 
 	return summaries.join('<hr />');

@@ -1,19 +1,21 @@
 import Cloudflare from 'cloudflare';
+import { format, subDays } from 'date-fns';
 import { CfScrapeApiResponse } from '../types';
 
 export async function createScrapes({
-	url,
 	submissionAnchorsSelector,
 	submissionScoresSelector,
 	submissionCommentsAnchorSelector,
 	env,
 }: {
-	url: string;
 	submissionAnchorsSelector: string;
 	submissionScoresSelector: string;
 	submissionCommentsAnchorSelector: string;
 	env: Env;
 }): Promise<Cloudflare.BrowserRendering.Scrape.ScrapeCreateResponse | null> {
+	const yesterday = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+	const url = `https://news.ycombinator.com/front?day=${yesterday}`;
+
 	const headers = new Headers();
 
 	headers.append('Authorization', `Bearer ${env.CLOUDFLARE_API_TOKEN}`);
@@ -41,6 +43,8 @@ export async function createScrapes({
 		console.log(`creating scrapes took: ${timing} ms`);
 
 		const json = (await response.json()) as CfScrapeApiResponse;
+
+		console.log('scrape response:', JSON.stringify(json, null, 2));
 
 		if (!json.success) {
 			throw new Error('Cloudflare api response was not successful.');

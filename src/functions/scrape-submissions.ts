@@ -1,18 +1,13 @@
 import Cloudflare from 'cloudflare';
-import { format, subDays } from 'date-fns';
 import type { Submission } from '../types';
 import { createScrapes } from './create-scrapes';
 
 export async function scrapeSubmissions(env: Env) {
-	const yesterday = format(subDays(new Date(), 1), 'yyyy-MM-dd');
-	const hackerNewsURL = `https://news.ycombinator.com/front?day=${yesterday}`;
-
 	const submissionAnchorsSelector = '.titleline > a';
 	const submissionScoresSelector = 'span.score';
 	const submissionCommentsAnchorSelector = '.subline > a:not(.hnuser)';
 
 	const scrapes = await createScrapes({
-		url: hackerNewsURL,
 		submissionAnchorsSelector,
 		submissionScoresSelector,
 		submissionCommentsAnchorSelector,

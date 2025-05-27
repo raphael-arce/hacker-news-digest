@@ -3,20 +3,22 @@ import { generateAISummary } from './generate-ai-summary';
 
 export async function generateHTMLSummary({
 	submission: { title, href, score, commentsAmount, commentsLink, markdown },
+	index,
 	env,
 }: {
 	submission: Submission;
+	index: number;
 	env: Env;
 }) {
 	if (!title || !href || !score || !commentsAmount || !commentsLink) {
 		return `
-<p>An article is missing a field: title: ${title}, href: ${href}, score: ${score},
-commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</p>`;
+<p><i>An article is missing a field: title: ${title}, href: ${href}, score: ${score},
+commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</i></p>`;
 	}
 
 	const titleLine = `
 <h2 style="font-size: 16px;">
-	<a href="${href}">${title}</a>
+	<a href="${href}">${index}. ${title}</a>
 	&nbsp;
 	<span style="font-size: 12px;">(${new URL(href).hostname})</span>
 </h2>
@@ -25,7 +27,7 @@ commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</p>`;
 	if (!markdown) {
 		return `
 ${titleLine}
-<p>could not get the markdown for this article</p>`;
+<p><i>could not get the markdown for this article</i></p>`;
 	}
 
 	const summary = await generateAISummary({ href, markdown, env });
@@ -33,7 +35,7 @@ ${titleLine}
 	if (summary === null) {
 		return `
 ${titleLine}
-<p>could not generate a summary for this article</p>`;
+<p><i>could not generate a summary for this article</i></p>`;
 	}
 
 	return `
