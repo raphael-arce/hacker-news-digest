@@ -30,6 +30,7 @@ export async function createScrapes({
 			body: JSON.stringify({
 				url,
 				elements: [
+					{ selector: 'title' },
 					{ selector: submissionAnchorsSelector },
 					{ selector: submissionScoresSelector },
 					{ selector: submissionCommentsAnchorSelector },
