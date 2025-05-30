@@ -3,11 +3,11 @@ import { generateAISummary } from './generate-ai-summary';
 
 export async function generateHTMLSummary({
 	submission: { title, href, score, commentsAmount, commentsLink, markdown },
-	index,
+	ordinal,
 	env,
 }: {
 	submission: Submission;
-	index: number;
+	ordinal: number;
 	env: Env;
 }) {
 	if (!title || !href || !score || !commentsAmount || !commentsLink) {
@@ -18,7 +18,7 @@ commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</i></p>`;
 
 	const titleLine = `
 <h2 style="font-size: 16px;">
-	<a href="${href}">${index}. ${title}</a>
+	<a href="${href}">${ordinal}. ${title}</a>
 	&nbsp;
 	<span style="font-size: 12px;">(${new URL(href).hostname})</span>
 </h2>

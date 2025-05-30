@@ -9,13 +9,14 @@ export async function generateSummaries({ submissions, env }: { submissions: Sub
 	 * The API has a rate limit of 1/sec. To keep it simple, we just do it sequentially.
 	 */
 	for (let i = 0; i < submissions.length; i++) {
+		const ordinal = i + 1;
 		const submission = submissions[i];
 
-		console.log(`submission_${i}: extracting markdown for ${submission.href}...`);
+		console.log(`submission_${ordinal}: extracting markdown for ${submission.href}...`);
 		submission.markdown = await extractMarkdown({ url: submission.href, env });
 
-		console.log(`submission_${i}: generating summary for ${submission.href}...`);
-		const summary = await generateHTMLSummary({ index: i, submission, env });
+		console.log(`submission_${ordinal}: generating summary for ${submission.href}...`);
+		const summary = await generateHTMLSummary({ ordinal, submission, env });
 
 		summaries.push(summary);
 	}

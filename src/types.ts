@@ -9,9 +9,11 @@ export type Submission = {
 	markdown?: string | null;
 };
 
-export type CfScrapeApiResponse = {
-	success: boolean;
-	result: Cloudflare.BrowserRendering.Scrape.ScrapeCreateResponse;
+export type SelectAllResult = {
+	children?: { data: string }[];
+	attribs?: {
+		href: string;
+	};
 };
 
 export type CfMarkdownApiResponse = {
