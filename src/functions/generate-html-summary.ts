@@ -2,7 +2,7 @@ import { Story } from '../types';
 import { generateAISummary } from './generate-ai-summary';
 
 export async function generateHTMLSummary({
-	story: { title, href, points, commentsAmount, commentsLink, markdown },
+	story: { title, url, points, commentsAmount, commentsUrl, markdown },
 	ordinal,
 	env,
 }: {
@@ -10,18 +10,18 @@ export async function generateHTMLSummary({
 	ordinal: number;
 	env: Env;
 }) {
-	if (!title || !href || !points || !commentsAmount || !commentsLink) {
+	if (!title || !url || !points || !commentsAmount || !commentsUrl) {
 		return `
-<p><i>An article is missing a field: title: ${title}, href: ${href}, points: ${points},
-commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</i></p>`;
+<p><i>An article is missing a field: title: ${title}, url: ${url}, points: ${points},
+commentsAmount: ${commentsAmount}, commentsUrl: ${commentsUrl}.</i></p>`;
 	}
 
 	const titleLine = `
 <h2 style="font-size: 16px;">
-	${ordinal}. <a href="${href}"> ${title}</a>
-	<span style="font-size: 12px;">(${new URL(href).hostname})</span>
+	${ordinal}. <a href="${url}"> ${title}</a>
+	<span style="font-size: 12px;">(${new URL(url).hostname})</span>
 </h2>
-<p><b>${points} points</b>, <a href="${commentsLink}">${commentsAmount} comments</a></p>`;
+<p><b>${points} points</b>, <a href="${commentsUrl}">${commentsAmount} comments</a></p>`;
 
 	if (!markdown) {
 		return `
@@ -29,7 +29,7 @@ ${titleLine}
 <p><i>could not get the markdown for this article</i></p>`;
 	}
 
-	const summary = await generateAISummary({ href, markdown, env });
+	const summary = await generateAISummary({ url, markdown, env });
 
 	if (summary === null) {
 		return `

@@ -1,9 +1,9 @@
 export type Story = {
 	title?: string | null;
-	href?: string | null;
+	url?: string | null;
 	points?: string | null;
 	commentsAmount?: string | null;
-	commentsLink?: string | null;
+	commentsUrl?: string | null;
 	markdown?: string | null;
 };
 

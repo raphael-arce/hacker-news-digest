@@ -12,10 +12,10 @@ export async function generateSummaries({ stories, env }: { stories: Story[]; en
 		const ordinal = i + 1;
 		const story = stories[i];
 
-		console.log(`submission_${ordinal}: extracting markdown for ${story.href}...`);
-		story.markdown = await extractMarkdown({ url: story.href, env });
+		console.log(`submission_${ordinal}: extracting markdown for ${story.url}...`);
+		story.markdown = await extractMarkdown({ url: story.url, env });
 
-		console.log(`submission_${ordinal}: generating summary for ${story.href}...`);
+		console.log(`submission_${ordinal}: generating summary for ${story.url}...`);
 		const summary = await generateHTMLSummary({ ordinal, story, env });
 
 		summaries.push(summary);

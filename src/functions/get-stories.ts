@@ -17,16 +17,16 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
 
 	for (let i = 0; i < results.hits.length; i++) {
 		const title = results.hits[i].title;
-		const href = absolutizeUrl(results.hits[i]);
+		const url = absolutizeUrl(results.hits[i]);
 		const points = results.hits[i].points;
-		const commentsLink = getStoryUrl(results.hits[i]);
+		const commentsUrl = getStoryUrl(results.hits[i]);
 		const commentsAmount = results.hits[i].num_comments;
 
 		submissions.push({
 			title,
-			href,
+			url: url,
 			points,
-			commentsLink,
+			commentsUrl,
 			commentsAmount,
 		});
 	}
