@@ -4,16 +4,18 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev --test-scheduled --remote",
+		"dev": "wrangler dev --test-scheduled",
 		"start": "wrangler dev --test-scheduled",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
 		"@ai-sdk/mistral": "1.2.8",
+		"@date-fns/utc": "2.1.0",
 		"ai": "4.3.16",
 		"cloudflare": "4.3.0",
 		"css-select": "5.1.0",
 		"date-fns": "4.1.0",
+		"dotenv": "16.5.0",
 		"htmlparser2": "10.0.0",
 		"resend": "4.5.1",
 		"typescript": "5.5.2",

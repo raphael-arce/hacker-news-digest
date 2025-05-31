@@ -1,28 +1,27 @@
-import { Submission } from '../types';
+import { Story } from '../types';
 import { generateAISummary } from './generate-ai-summary';
 
 export async function generateHTMLSummary({
-	submission: { title, href, score, commentsAmount, commentsLink, markdown },
+	story: { title, href, points, commentsAmount, commentsLink, markdown },
 	ordinal,
 	env,
 }: {
-	submission: Submission;
+	story: Story;
 	ordinal: number;
 	env: Env;
 }) {
-	if (!title || !href || !score || !commentsAmount || !commentsLink) {
+	if (!title || !href || !points || !commentsAmount || !commentsLink) {
 		return `
-<p><i>An article is missing a field: title: ${title}, href: ${href}, score: ${score},
+<p><i>An article is missing a field: title: ${title}, href: ${href}, points: ${points},
 commentsAmount: ${commentsAmount}, commentsLink: ${commentsLink}.</i></p>`;
 	}
 
 	const titleLine = `
 <h2 style="font-size: 16px;">
-	<a href="${href}">${ordinal}. ${title}</a>
-	&nbsp;
+	${ordinal}. <a href="${href}"> ${title}</a>
 	<span style="font-size: 12px;">(${new URL(href).hostname})</span>
 </h2>
-<p><b>${score}</b>, <a href="${commentsLink}">${commentsAmount}</a></p>`;
+<p><b>${points} points</b>, <a href="${commentsLink}">${commentsAmount} comments</a></p>`;
 
 	if (!markdown) {
 		return `

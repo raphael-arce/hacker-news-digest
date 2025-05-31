@@ -1,19 +1,22 @@
-import Cloudflare from 'cloudflare';
-
-export type Submission = {
+export type Story = {
 	title?: string | null;
 	href?: string | null;
-	score?: string | null;
+	points?: string | null;
 	commentsAmount?: string | null;
 	commentsLink?: string | null;
 	markdown?: string | null;
 };
 
-export type SelectAllResult = {
-	children?: { data: string }[];
-	attribs?: {
-		href: string;
-	};
+export type AlgoliaHit = {
+	title: string;
+	url?: string;
+	points: string;
+	num_comments: string;
+	story_id: string;
+};
+
+export type AlgoliaResponse = {
+	hits: AlgoliaHit[];
 };
 
 export type CfMarkdownApiResponse = {
