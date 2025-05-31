@@ -1,17 +1,22 @@
-import Cloudflare from 'cloudflare';
-
-export type Submission = {
+export type Story = {
 	title?: string | null;
-	href?: string | null;
-	score?: string | null;
+	url?: string | null;
+	points?: string | null;
 	commentsAmount?: string | null;
-	commentsLink?: string | null;
+	commentsUrl?: string | null;
 	markdown?: string | null;
 };
 
-export type CfScrapeApiResponse = {
-	success: boolean;
-	result: Cloudflare.BrowserRendering.Scrape.ScrapeCreateResponse;
+export type AlgoliaHit = {
+	title: string;
+	url?: string;
+	points: string;
+	num_comments: string;
+	story_id: string;
+};
+
+export type AlgoliaResponse = {
+	hits: AlgoliaHit[];
 };
 
 export type CfMarkdownApiResponse = {

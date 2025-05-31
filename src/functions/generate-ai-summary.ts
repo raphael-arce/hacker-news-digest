@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
 import { createMistral } from '@ai-sdk/mistral';
 
-export async function generateAISummary({ href, markdown, env }: { href: string; markdown: string; env: Env }) {
+export async function generateAISummary({ url, markdown, env }: { url: string; markdown: string; env: Env }) {
 	const modelName = env.MISTRAL_MODEL_NAME;
 	const model = createMistral({
 		apiKey: env.MISTRAL_API_KEY,
@@ -27,9 +27,16 @@ ${markdown}`;
 
 		return text;
 	} catch (error) {
-		console.error(`Error getting AI summary for ${href}:`, error);
-		// TODO return custom error for custom/known errors, e.g. too many tokens
-		// (`Prompt contains 161365 tokens and 0 draft tokens, too large for model with 131072 maximum context length`)
+		console.error(`Error getting AI summary for ${url}:`, error);
+
+		const { message } = error as Error;
+
+		if (message.includes('too large for model')) {
+			const pattern = /Prompt contains (\d+) tokens/;
+			const [_, amount] = message.match(pattern) ?? ['', 'unknown amount'];
+			return `could not generate a summary for this article, too many tokens (${amount})`;
+		}
+
 		return null;
 	}
 }

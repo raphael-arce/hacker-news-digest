@@ -1,7 +1,8 @@
 import { Resend } from 'resend';
-import { format, subDays } from 'date-fns';
+import { UTCDate } from '@date-fns/utc';
+import { formatDate } from 'date-fns';
 
-export async function sendEmail({ summaries, env }: { summaries: string; env: Env }) {
+export async function sendEmail({ date, summaries, env }: { date: UTCDate; summaries: string; env: Env }) {
 	const resend = new Resend(env.RESEND_API_KEY);
 
 	/**
@@ -11,10 +12,10 @@ export async function sendEmail({ summaries, env }: { summaries: string; env: En
 	 * LLLL: Month (January, February, March...)
 	 * yyyy: Year (2025, 2026, 2027...)
 	 */
-	const yesterday = format(subDays(new Date(), 1), "EEEE do 'of' LLLL yyyy");
+	const formattedDate = formatDate(date, "EEEE do 'of' LLLL yyyy");
 
 	const email = `
-<h1 style="font-size:16px;">${yesterday}</h2>
+<h1 style="font-size:16px;">${formattedDate}</h2>
 ${summaries}
 `;
 
