@@ -28,8 +28,15 @@ ${markdown}`;
 		return text;
 	} catch (error) {
 		console.error(`Error getting AI summary for ${url}:`, error);
-		// TODO return custom error for custom/known errors, e.g. too many tokens
-		// (`Prompt contains 161365 tokens and 0 draft tokens, too large for model with 131072 maximum context length`)
+
+		const { message } = error as Error;
+
+		if (message.includes('too large for model')) {
+			const pattern = /Prompt contains (\d+) tokens/;
+			const [_, amount] = message.match(pattern) ?? ['', 'unknown amount'];
+			return `could not generate a summary for this article, too many tokens (${amount})`;
+		}
+
 		return null;
 	}
 }
