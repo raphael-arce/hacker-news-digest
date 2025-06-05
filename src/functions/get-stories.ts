@@ -10,7 +10,9 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
 
 	console.log(url);
 
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(10_000),
+	});
 	const results = (await response.json()) as AlgoliaResponse;
 
 	const submissions: Story[] = [];

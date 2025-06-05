@@ -17,6 +17,7 @@ export async function extractMarkdown({ url, env }: { url?: string | null; env: 
 			headers,
 			method: 'POST',
 			body: JSON.stringify({ url }),
+			signal: AbortSignal.timeout(10_000),
 		});
 
 		const end = performance.now();

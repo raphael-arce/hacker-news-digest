@@ -19,6 +19,7 @@ ${markdown}`;
 		const { text } = await generateText({
 			model,
 			prompt,
+			abortSignal: AbortSignal.timeout(10_000),
 		});
 
 		const end = performance.now();
@@ -34,7 +35,7 @@ ${markdown}`;
 		if (message.includes('too large for model')) {
 			const pattern = /Prompt contains (\d+) tokens/;
 			const [_, amount] = message.match(pattern) ?? ['', 'unknown amount'];
-			return `could not generate a summary for this article, too many tokens (${amount})`;
+			return `<i>could not generate a summary for this article, too many tokens (${amount})</i>`;
 		}
 
 		return null;
