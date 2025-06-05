@@ -2,7 +2,7 @@ import { UTCDate } from '@date-fns/utc';
 import type { AlgoliaHit, AlgoliaResponse, Story } from '../types';
 import { startOfDay, endOfDay, getUnixTime } from 'date-fns';
 
-export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
+export async function getStories({ date, env }: { date: UTCDate; env: Env }): Promise<Story[]> {
 	const startOfDate = startOfDay(date);
 	const endOfDate = endOfDay(date);
 
@@ -10,12 +10,19 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
 
 	console.log(url);
 
-	const response = await fetch(url, {
-		signal: AbortSignal.timeout(10_000),
-	});
-	const results = (await response.json()) as AlgoliaResponse;
+	let results: AlgoliaResponse;
+	try {
+		const response = await fetch(url, {
+			signal: AbortSignal.timeout(10_000),
+		});
 
-	const submissions: Story[] = [];
+		results = (await response.json()) as AlgoliaResponse;
+	} catch (error) {
+		console.error('Failed to fetch stories:', error);
+		return [];
+	}
+
+	const stories: Story[] = [];
 
 	for (let i = 0; i < results.hits.length; i++) {
 		const title = results.hits[i].title;
@@ -24,7 +31,7 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
 		const commentsUrl = getStoryUrl(results.hits[i]);
 		const commentsAmount = results.hits[i].num_comments;
 
-		submissions.push({
+		stories.push({
 			title,
 			url: url,
 			points,
@@ -33,7 +40,7 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }) {
 		});
 	}
 
-	return submissions;
+	return stories;
 }
 
 function absolutizeUrl({ url, story_id }: AlgoliaHit) {
