@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 import { UTCDate } from '@date-fns/utc';
 import { formatDate } from 'date-fns';
 
-export async function sendEmail({ date, summaries, env }: { date: UTCDate; summaries: string; env: Env }) {
+export async function sendEmail({ date, body, env }: { date: UTCDate; body: string; env: Env }) {
 	const resend = new Resend(env.RESEND_API_KEY);
 
 	/**
@@ -16,7 +16,7 @@ export async function sendEmail({ date, summaries, env }: { date: UTCDate; summa
 
 	const email = `
 <h1 style="font-size:16px;">${formattedDate}</h2>
-${summaries}
+${body}
 `;
 
 	const { error } = await resend.emails.send({

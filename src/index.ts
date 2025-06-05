@@ -21,7 +21,7 @@ export default {
 
 		const summaries = await generateSummaries({ stories, env });
 
-		await sendEmail({ date: yesterday, summaries, env });
+		await sendEmail({ date: yesterday, body: summaries, env });
 
 		const end = performance.now();
 		const timing = end - start;

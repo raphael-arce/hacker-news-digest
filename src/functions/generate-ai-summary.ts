@@ -38,6 +38,10 @@ ${markdown}`;
 			return `<i>could not generate a summary for this article, too many tokens (${amount})</i>`;
 		}
 
+		if (message.includes('The operation was aborted due to timeout')) {
+			return `<i>could not generate a summary for this article, timed out (>10seconds)</i>`;
+		}
+
 		return null;
 	}
 }

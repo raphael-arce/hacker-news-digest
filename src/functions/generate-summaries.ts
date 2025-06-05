@@ -3,6 +3,10 @@ import { extractMarkdown } from './extract-markdown';
 import { generateHTMLSummary } from './generate-html-summary';
 
 export async function generateSummaries({ stories, env }: { stories: Story[]; env: Env }) {
+	if (stories.length === 0) {
+		return '<p><i>could not fetch stories</i></p>';
+	}
+
 	let summaries: string[] = [];
 
 	/**
@@ -19,10 +23,6 @@ export async function generateSummaries({ stories, env }: { stories: Story[]; en
 		const summary = await generateHTMLSummary({ ordinal, story, env });
 
 		summaries.push(summary);
-	}
-
-	if (summaries.length === 0) {
-		return '<p><i>There was an error and no summaries could be generated<i/></p>';
 	}
 
 	return summaries.join('<hr />');
