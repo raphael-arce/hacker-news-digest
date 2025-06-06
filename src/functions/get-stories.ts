@@ -17,6 +17,10 @@ export async function getStories({ date, env }: { date: UTCDate; env: Env }): Pr
 		});
 
 		results = (await response.json()) as AlgoliaResponse;
+
+		if (!results?.hits) {
+			throw new Error(`No hits in algolia results: ${JSON.stringify(results)}`);
+		}
 	} catch (error) {
 		console.error('Failed to fetch stories:', error);
 		return [];

@@ -16,7 +16,7 @@ export type AlgoliaHit = {
 };
 
 export type AlgoliaResponse = {
-	hits: AlgoliaHit[];
+	hits?: AlgoliaHit[];
 };
 
 export type CfMarkdownApiResponse = {
