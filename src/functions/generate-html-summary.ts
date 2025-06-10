@@ -40,5 +40,5 @@ ${titleLine}
 
 	return `
 ${titleLine}
-<p>${escapeHtmlMarkup(summary)}</p>`;
+<p>${summary}</p>`;
 }

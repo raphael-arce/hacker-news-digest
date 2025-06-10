@@ -1,5 +1,6 @@
 import { generateText } from 'ai';
 import { createMistral } from '@ai-sdk/mistral';
+import { escapeHtmlMarkup } from './escape-html-markup';
 
 export async function generateAISummary({ url, markdown, env }: { url: string; markdown: string; env: Env }) {
 	const modelName = env.MISTRAL_MODEL_NAME;
@@ -26,7 +27,7 @@ ${markdown}`;
 		const timing = end - start;
 		console.log(`generating AI summary took: ${timing} ms`);
 
-		return text;
+		return escapeHtmlMarkup(text);
 	} catch (error) {
 		console.error(`Error getting AI summary for ${url}:`, error);
 
