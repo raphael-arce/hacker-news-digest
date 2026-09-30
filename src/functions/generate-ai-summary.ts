@@ -1,18 +1,20 @@
 import { generateText } from 'ai';
-import { createMistral } from '@ai-sdk/mistral';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { escapeHtmlMarkup } from './escape-html-markup';
 
 export async function generateAISummary({ url, markdown, env }: { url: string; markdown: string; env: Env }) {
-	const modelName = env.MISTRAL_MODEL_NAME;
-	const model = createMistral({
-		apiKey: env.MISTRAL_API_KEY,
+	const modelName = env.OPENROUTER_MODEL_NAME;
+	const model = createOpenRouter({
+		apiKey: env.OPENROUTER_API_KEY,
 	})(modelName);
 
-	const prompt = `
-Summarize the following markdown article in MAX 160 CHARACTERS and MAX 3 SENTENCES.
-Avoid using a reporting verb, you can directly state the action or information from the author.
-Answer with JUST TEXT, DO NOT RETURN MARKDOWN:
-${markdown}`;
+	const prompt = `<article>
+${markdown}
+</article>
+
+Summarize the article above in ONE sentence of at most 160 characters (hard limit).
+Lead with the concrete news or finding, not "The article/author says".
+Plain text only, no markdown, no preamble.`;
 
 	try {
 		const start = performance.now();

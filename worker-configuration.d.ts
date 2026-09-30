@@ -6,8 +6,8 @@ declare namespace Cloudflare {
 		ACCOUNT_ID: string;
 		CLOUDFLARE_API_TOKEN: string;
 		LIMIT: string;
-		MISTRAL_API_KEY: string;
-		MISTRAL_MODEL_NAME: string;
+		OPENROUTER_API_KEY: string;
+		OPENROUTER_MODEL_NAME: string;
 		RECEIVERS: string;
 		RESEND_API_KEY: string;
 		SENDER: string;
