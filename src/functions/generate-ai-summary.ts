@@ -2,14 +2,22 @@ import { generateText } from 'ai';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { escapeHtmlMarkup } from './escape-html-markup';
 
+const MAX_MARKDOWN_CHARS = 20_000;
+
 export async function generateAISummary({ url, markdown, env }: { url: string; markdown: string; env: Env }) {
 	const modelName = env.OPENROUTER_MODEL_NAME;
 	const model = createOpenRouter({
 		apiKey: env.OPENROUTER_API_KEY,
 	})(modelName);
 
+	/**
+	 * The beginning of an article is enough for a one-sentence summary,
+	 * and some pages (e.g. ASCII art) produce >1M chars of markdown.
+	 */
+	const truncatedMarkdown = markdown.slice(0, MAX_MARKDOWN_CHARS);
+
 	const prompt = `<article>
-${markdown}
+${truncatedMarkdown}
 </article>
 
 Summarize the article above in ONE sentence of at most 160 characters (hard limit).
